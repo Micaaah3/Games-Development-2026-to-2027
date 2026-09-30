@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class NQ_PlaneControl : MonoBehaviour
+public class NQ_PlaneControl : MonoBehaviour, NQ_IDamage
 {
     float pitchingSpeed = 45f;  // Speed in degrees per second for pitching
     private float rollingSpeed = 45f;
@@ -94,5 +94,10 @@ public class NQ_PlaneControl : MonoBehaviour
         }
         velocity += acceleration * Time.deltaTime;
         transform.position += velocity * Time.deltaTime;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        throw new System.NotImplementedException();
     }
 }
