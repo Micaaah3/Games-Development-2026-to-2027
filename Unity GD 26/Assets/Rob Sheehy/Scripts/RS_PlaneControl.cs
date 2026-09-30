@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class RS_PlaneControl : MonoBehaviour
+public class RS_PlaneControl : MonoBehaviour, RS_IDamagable
 {
     float pitchingSpeed = 45f;  // Speed in degrees per second for pitching
     private float rollingSpeed = 45f;
@@ -104,5 +104,10 @@ public class RS_PlaneControl : MonoBehaviour
         transform.position += velocity * Time.deltaTime;
 
 
+    }
+
+    public void TakeDamage(int damage)
+    {
+        throw new NotImplementedException();
     }
 }
