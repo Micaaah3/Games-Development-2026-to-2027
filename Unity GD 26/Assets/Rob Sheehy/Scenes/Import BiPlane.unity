@@ -407,7 +407,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!64 &1766872438
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -649,9 +649,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1882493881}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ee75070fb411714f96ef5f2c90b788b, type: 3}
+  m_Script: {fileID: 11500000, guid: 9d415dbb1729a1040aa204b54f0f220a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RD_followCameraScript
+  m_EditorClassIdentifier: Assembly-CSharp::RS_FollowCameraScript
 --- !u!1001 &2581144827559523765
 PrefabInstance:
   m_ObjectHideFlags: 0
