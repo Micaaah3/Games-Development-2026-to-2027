@@ -12,7 +12,7 @@ public class NQ_BombScript : MonoBehaviour
     float rotationRate = 360;
     internal void SetInitalVelocity(Vector3 StartingVelocity)
     {
-        throw new NotImplementedException();
+        velocity = StartingVelocity;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
