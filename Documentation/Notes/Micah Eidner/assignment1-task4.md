@@ -15,6 +15,10 @@ I'll see if I want it to be separate interfaces for the same system. Right now i
 
 All of the following will be under ./MicahEidner/FlakDev/
 
+The scripts that use the interfaces can be found @
+
+- Scripts: ./scripts/ME_[ GameObject ]*.*
+
 - Interfaces: ./interfaces/ME_*.*
 - Prefabs: ./prefabs/ME_*.* 
 - Flak: ./flak/ME_*.* 
