@@ -1,20 +1,16 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
-public class ME_TargetHealth : MonoBehaviour, IHealth
+public class ME_TargetHealth : MonoBehaviour, IHealth, Iimmunity
 {
     [SerializeField]
     private float health = 100;
-
     [SerializeField]
     private float maxHealth = 100;
 
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    [SerializeField]
+    private bool isImmune = false;
 
     #region IHealth
 
@@ -46,7 +42,6 @@ public class ME_TargetHealth : MonoBehaviour, IHealth
         health = maxHealth;
         Debug.Log("Healed! I'm now at: " + health);
     }
-
     public void UpdateMaxHealth(float newMaxHealth)
     {
         if (newMaxHealth < 0)
@@ -62,4 +57,17 @@ public class ME_TargetHealth : MonoBehaviour, IHealth
     }
 
     #endregion
+    #region immunity
+    public void SetImmunity(bool immunity)
+    {
+        isImmune = immunity;
+    }
+
+    public void ToggleImmunity()
+    {
+        isImmune = !isImmune;
+    }
+
+    #endregion
+
 }
