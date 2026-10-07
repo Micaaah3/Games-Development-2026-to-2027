@@ -119,6 +119,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &132631779 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3696743570029158588, guid: b8d8cb69314ddd046bd8b9cfe6bd9d82, type: 3}
+  m_PrefabInstance: {fileID: 9101846137629992210}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &148220020
 GameObject:
   m_ObjectHideFlags: 0
@@ -691,6 +696,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NQ_BombPf
       objectReference: {fileID: 0}
+    - target: {fileID: 704567496002624832, guid: 18d22934708977242afdfacc9a2ac773, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5793174110263664341, guid: 18d22934708977242afdfacc9a2ac773, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -788,19 +797,36 @@ PrefabInstance:
       propertyPath: m_Name
       value: P38J Lightning
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8734520909309342259, guid: b8d8cb69314ddd046bd8b9cfe6bd9d82, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3696743570029132956, guid: b8d8cb69314ddd046bd8b9cfe6bd9d82, type: 3}
       insertIndex: -1
       addedObject: {fileID: 351386877}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3696743570029158588, guid: b8d8cb69314ddd046bd8b9cfe6bd9d82, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9101846137629992212}
   m_SourcePrefab: {fileID: 100100000, guid: b8d8cb69314ddd046bd8b9cfe6bd9d82, type: 3}
 --- !u!4 &9101846137629992211 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3696743570029132956, guid: b8d8cb69314ddd046bd8b9cfe6bd9d82, type: 3}
   m_PrefabInstance: {fileID: 9101846137629992210}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &9101846137629992212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132631779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d56fd274f7c5bf44e9cee256d32924d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NQ_PlaneControl
+  theBombCloneTemplate: {fileID: 704567496002624832, guid: 18d22934708977242afdfacc9a2ac773, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
