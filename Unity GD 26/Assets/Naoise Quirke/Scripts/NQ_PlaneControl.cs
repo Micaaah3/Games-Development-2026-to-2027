@@ -87,7 +87,7 @@ public class NQ_PlaneControl : MonoBehaviour, NQ_IDamage
         {
             bombSlot[NextBombSlotIndex].DroptheBomb();
 
-            NextBombSlotIndex += (NextBombSlotIndex + 1) % bombSlot.Length;
+            NextBombSlotIndex = (NextBombSlotIndex + 1) % bombSlot.Length;
 
             if (NextBombSlotIndex == bombSlot.Length) NextBombSlotIndex = 0;
 
