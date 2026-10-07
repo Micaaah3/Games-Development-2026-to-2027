@@ -10,6 +10,8 @@ public class NQ_PlaneControl : MonoBehaviour, NQ_IDamage
     float drag = 1;
     public GameObject theBombCloneTemplate;
     NQ_BombSlotScript[] bombSlot;
+    int fuel = 100;
+    int ammo = 4;
 
     int NextBombSlotIndex = 0;
 
@@ -79,12 +81,14 @@ public class NQ_PlaneControl : MonoBehaviour, NQ_IDamage
         if (Input.GetKey(KeyCode.Space))
         {
             acceleration += transform.forward * thrustValue;
+            fuel -= 1 //Figure out how to make it go down for every second.;
         }
 
         acceleration += -drag * velocity;
 
         if (Input.GetKeyDown(KeyCode.Return))
         {
+            ammo -= 1;
             bombSlot[NextBombSlotIndex].DroptheBomb();
 
             NextBombSlotIndex = (NextBombSlotIndex + 1) % bombSlot.Length;
@@ -92,6 +96,7 @@ public class NQ_PlaneControl : MonoBehaviour, NQ_IDamage
             if (NextBombSlotIndex == bombSlot.Length) NextBombSlotIndex = 0;
 
         }
+
         velocity += acceleration * Time.deltaTime;
         transform.position += velocity * Time.deltaTime;
     }
