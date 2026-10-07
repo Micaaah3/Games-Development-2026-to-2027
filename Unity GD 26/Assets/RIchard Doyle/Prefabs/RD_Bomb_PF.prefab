@@ -9,7 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6351263795874097138}
-  - component: {fileID: -4158888066905874424}
+  - component: {fileID: -8274037212667362448}
+  - component: {fileID: -7308473402416214409}
   m_Layer: 0
   m_Name: RD_Bomb_PF
   m_TagString: Untagged
@@ -33,7 +34,19 @@ Transform:
   - {fileID: 1998879064805065000}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-4158888066905874424
+--- !u!114 &-8274037212667362448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7083068417970317475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41893fedc4b69614d8053b82f70d45d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+--- !u!114 &-7308473402416214409
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
