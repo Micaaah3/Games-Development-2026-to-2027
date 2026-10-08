@@ -81,7 +81,7 @@ public class NQ_PlaneControl : MonoBehaviour, NQ_IDamage
         if (Input.GetKey(KeyCode.Space))
         {
             acceleration += transform.forward * thrustValue;
-            fuel -= 1 //Figure out how to make it go down for every second.;
+            fuel -= 1; //Figure out how to make it go down for every second.
         }
 
         acceleration += -drag * velocity;
