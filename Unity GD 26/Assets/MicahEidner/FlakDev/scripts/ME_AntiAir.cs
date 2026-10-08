@@ -1,4 +1,6 @@
+using System.Net.Sockets;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 public class ME_AntiAir : MonoBehaviour, IHealth
 {
     #nullable enable
@@ -18,9 +20,20 @@ public class ME_AntiAir : MonoBehaviour, IHealth
 
     [SerializeField]
     private float _initialShellSpeed = 300f;
+    [SerializeField]
+    private GameObject Shell;
 
     [SerializeField]
     private GameObject? _currentTarget = null;
+
+    [SerializeField]
+    private Transform _firingPosition;
+
+    private int _shootTimer;
+
+    [SerializeField]
+    private int _shootTimerMax = 30;
+
 
     private int _retargetTimer;
 
@@ -31,12 +44,33 @@ public class ME_AntiAir : MonoBehaviour, IHealth
     private void Start()
     {
         _currentTarget = findClosestTarget();
+        _firingPosition = transform.GetChild(0).transform;
     }
 
     private void Update()
     {
-        if (_currentTarget != null) {
+        if (_currentTarget != null)
+        {
             float distance = Vector3.Distance(_currentTarget.transform.position, transform.position);
+            //Shoot logic
+            if (_shootTimer >= _shootTimerMax && distance <= _maxRange)
+            {
+                //Target isn't null & Can shoot.
+
+                GameObject shell = Instantiate(Shell, _firingPosition.position, Quaternion.identity);
+
+                ME_AAShell shellScript = shell.GetComponent<ME_AAShell>();
+
+                shellScript.InitializeShell(_currentTarget.transform.position, 3000f, 10f, 10f);
+
+                _shootTimer = 0;
+            }
+            else
+            {
+                if (_shootTimer >= _shootTimerMax)
+                    _shootTimer = 0;
+                _shootTimer++;
+            }
 
             if (distance > 20f && _retargetTimer >= _retargetMax)
             {
