@@ -1,54 +1,81 @@
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting.Dependencies.Sqlite;
+using System;
 using UnityEngine;
 
-public class MoveScript : MonoBehaviour
+public class KK_MoveScript : MonoBehaviour
 {
+    float pitchingSpeed = 45f;  // Speed in degrees per second for pitching
+    private float rollingSpeed = 45f;
+    Vector3 velocity, acceleration;
+    private float thrustValue = 20f;
+    private float gravity = 9.81f;
+    float drag = 1;
+    public GameObject theBombCloneTemplate;
+
+    internal void TurnRed()
+    {
+        Renderer r = GetComponent<Renderer>();
+        r.material.color = Color.red;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
-    [SerializeField] private float speed = 5f;
-    [SerializeField] private float rotSpeed = 10f;
-    Vector3 velocity;
-    Vector3 acceleration;
 
     // Update is called once per frame
     void Update()
     {
-        Vector3 direction = Vector3.zero;
-        Vector3 rotation = Vector3.zero;
+        acceleration = Vector3.zero;
+
+        float simulatedGravity;
+
+        if (velocity.magnitude < 10)
+            simulatedGravity = 9.8f;
+        else if (velocity.magnitude < 20)
+            simulatedGravity = 4f;
+        else simulatedGravity = 0;
 
 
-        if (Input.GetKey(KeyCode.Return)) //Engines
+        acceleration += new Vector3(0, -simulatedGravity, 0);
+
+        if (Input.GetKey(KeyCode.UpArrow))
         {
-
-            acceleration = transform.forward * speed;
+            // Pitch
+            transform.Rotate(Vector3.right, pitchingSpeed * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            // Pitch
+            transform.Rotate(Vector3.right, -pitchingSpeed * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            // Pitch
+            transform.Rotate(Vector3.forward, rollingSpeed * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            // Pitch
+            transform.Rotate(Vector3.forward, -rollingSpeed * Time.deltaTime);
         }
 
-        if (Input.GetKey(KeyCode.S))
+
+        if (Input.GetKey(KeyCode.Space))
         {
-            rotation -= Vector3.right;
+            acceleration += transform.forward * thrustValue;
         }
 
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.Return))
         {
-            rotation += Vector3.right;
+            Instantiate(theBombCloneTemplate);
         }
 
-        if (Input.GetKey(KeyCode.A))
-        {
-            rotation += Vector3.down;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            rotation -= Vector3.down;
-        }
+        acceleration += -drag * velocity;
 
-        direction.Normalize(); //Prevent digonal movement from being faster than straight movement
         velocity += acceleration * Time.deltaTime;
         transform.position += velocity * Time.deltaTime;
-        transform.Rotate(rotation * rotSpeed * Time.deltaTime);
+
+
     }
 }
