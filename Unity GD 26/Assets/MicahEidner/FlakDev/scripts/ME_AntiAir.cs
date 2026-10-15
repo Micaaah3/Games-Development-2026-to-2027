@@ -1,7 +1,6 @@
-using System.Net.Sockets;
+using System;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
-public class ME_AntiAir : MonoBehaviour, IHealth
+public class ME_AntiAir : MonoBehaviour, IHealth, ITargetable
 {
     #nullable enable
     // ^^^^^^^^^^^^^
@@ -19,7 +18,7 @@ public class ME_AntiAir : MonoBehaviour, IHealth
     private float _maxRange = 500f;
 
     [SerializeField]
-    private float _initialShellSpeed = 300f;
+    private float _initialShellSpeed = 3000f;
     [SerializeField]
     private GameObject Shell;
 
@@ -41,6 +40,9 @@ public class ME_AntiAir : MonoBehaviour, IHealth
     private int _retargetMax = 360;
     //Some random number I chose ^^
 
+    [SerializeField]
+    private bool _AATargetable = false;
+
     private void Start()
     {
         _currentTarget = findClosestTarget();
@@ -57,11 +59,7 @@ public class ME_AntiAir : MonoBehaviour, IHealth
             {
                 //Target isn't null & Can shoot.
 
-                GameObject shell = Instantiate(Shell, _firingPosition.position, Quaternion.identity);
-
-                ME_AAShell shellScript = shell.GetComponent<ME_AAShell>();
-
-                shellScript.InitializeShell(_currentTarget.transform.position, 3000f, 10f, 10f);
+                FireShell(distance);
 
                 _shootTimer = 0;
             }
@@ -72,7 +70,7 @@ public class ME_AntiAir : MonoBehaviour, IHealth
                 _shootTimer++;
             }
 
-            if (distance > 20f && _retargetTimer >= _retargetMax)
+            if (distance > 80f && _retargetTimer >= _retargetMax)
             {
                 _currentTarget = findClosestTarget();
                 _retargetTimer = 0;
@@ -88,6 +86,23 @@ public class ME_AntiAir : MonoBehaviour, IHealth
     }
 
     #region AA
+    private void FireShell(float distance)
+    {
+        float fuseTimer = 10f;
+        if (distance != -1)
+        {
+            int inconsistency = UnityEngine.Random.Range(-100, 100);
+
+            fuseTimer = (distance / _initialShellSpeed) + (inconsistency / 100);
+        }
+
+        GameObject shell = Instantiate(Shell, _firingPosition.position, Quaternion.identity);
+
+        ME_AAShell shellScript = shell.GetComponentInChildren<ME_AAShell>();
+
+        shellScript.InitializeShell(_currentTarget.transform.position, _initialShellSpeed, 10f, fuseTimer);
+
+    }
 
     public GameObject? findClosestTarget()
     {
@@ -102,11 +117,15 @@ public class ME_AntiAir : MonoBehaviour, IHealth
             if (collider.gameObject == gameObject)
                 continue;
 
-            collider.TryGetComponent<IHealth>(out IHealth? component);
+            collider.TryGetComponent<ITargetable>(out ITargetable? targetComponent);
 
-            if (component is null)
-                continue;
+            if (targetComponent is null) continue;
+            if (targetComponent.shouldGetTargetedByAA() == false) continue;
 
+            collider.TryGetComponent<IHealth>(out IHealth? healthComponent);
+
+            if (healthComponent is null) continue;
+            
             float distance = Vector3.Distance(collider.transform.position, transform.position);
 
             if (distance >= closestTargetRange)
@@ -165,5 +184,24 @@ public class ME_AntiAir : MonoBehaviour, IHealth
         Debug.Log("New Max Health! I'm now at: " + health + "And my max health is " + maxHealth);
     }
 
+    #endregion
+
+    #region ITargetable
+
+
+    public bool shouldGetTargetedByAA()
+    {
+        return _AATargetable;
+    }
+
+    public void toggleTargetByAA()
+    {
+        _AATargetable = !_AATargetable;
+    }
+
+    public void setTargetByAA(bool shouldGetTargeted)
+    {
+        _AATargetable = shouldGetTargeted;
+    }
     #endregion
 }

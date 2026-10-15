@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class ME_TargetHealth : MonoBehaviour, IHealth, Iimmunity
+public class ME_TargetHealth : MonoBehaviour, IHealth, Iimmunity, ITargetable
 {
     [SerializeField]
     private float health = 100;
@@ -10,7 +10,9 @@ public class ME_TargetHealth : MonoBehaviour, IHealth, Iimmunity
     private float maxHealth = 100;
 
     [SerializeField]
-    private bool isImmune = false;
+    private bool _isImmune = false;
+    [SerializeField]
+    private bool _AATargetable = true;
 
     #region IHealth
 
@@ -57,17 +59,34 @@ public class ME_TargetHealth : MonoBehaviour, IHealth, Iimmunity
     }
 
     #endregion
-    #region immunity
+    #region Iimmunity
     public void SetImmunity(bool immunity)
     {
-        isImmune = immunity;
+        _isImmune = immunity;
     }
 
     public void ToggleImmunity()
     {
-        isImmune = !isImmune;
+        _isImmune = !_isImmune;
     }
 
     #endregion
+    #region ITargetable
 
+
+    public bool shouldGetTargetedByAA()
+    {
+        return _AATargetable;
+    }
+
+    public void toggleTargetByAA()
+    {
+        _AATargetable = !_AATargetable;
+    }
+
+    public void setTargetByAA(bool shouldGetTargeted)
+    {
+        _AATargetable = shouldGetTargeted;
+    }
+    #endregion
 }

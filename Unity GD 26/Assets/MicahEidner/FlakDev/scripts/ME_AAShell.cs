@@ -11,27 +11,45 @@ public class ME_AAShell : MonoBehaviour, ME_IFused
     private float   _speed;
     [SerializeField]
     private float   _explosionDistance;
+    [SerializeField]
+    private float _randomRotation = 3f;
 
-    public void InitializeShell(Vector3 target, float speed, float explosionDistance,float fuseDelay) {
+    private Transform parentTransform;
+
+    public void InitializeShell(Vector3 target, float speed, float explosionDistance,float fuseDelay)
+    {
         // fuseDelay is in seconds. Ms = 0.001
+        parentTransform = transform.parent;
+
         _direction = (target - transform.position).normalized;
 
         //create the rotation we need to be in to look at the target
-        Quaternion _lookRotation = Quaternion.LookRotation(_direction);
+        Quaternion _lookRotation = LookRotationWithRandom();
 
-        transform.rotation = _lookRotation;
+        parentTransform.rotation = _lookRotation;
 
         _speed = speed;
         _explosionDistance = explosionDistance;
-        
+
         //start explosion coroutine.
         StartCoroutine("Detonate", fuseDelay);
     }
 
+    private Quaternion LookRotationWithRandom()
+    {
+        Vector3 rotation = Quaternion.LookRotation(_direction).eulerAngles;
+
+        Vector3 RandomRotation = new Vector3(
+            Random.Range(-_randomRotation, _randomRotation),
+            Random.Range(-_randomRotation, _randomRotation),
+            Random.Range(-_randomRotation, _randomRotation));
+
+        return Quaternion.Euler(rotation + RandomRotation);
+    }
 
     private void Update()
     {
-        transform.position = transform.position + _speed * Time.deltaTime * transform.up;
+        parentTransform.position = parentTransform.position + _speed * Time.deltaTime * transform.up;
 
         float randomDrag = Random.Range(0, 100) / 10000;
 
@@ -44,10 +62,27 @@ public class ME_AAShell : MonoBehaviour, ME_IFused
     {
         yield return new WaitForSeconds(fuseDelay);
 
-        //Trigger explosion
-        Debug.Log("Fuse exploded at "+transform.position);
+        int targetsHit = 0;
 
-        Destroy(gameObject);
+        Collider[] hits = Physics.OverlapSphere(parentTransform.position, _explosionDistance);
+        foreach (Collider hit in hits)
+        {
+            if (hit.gameObject == gameObject)
+                continue;
+
+            hit.TryGetComponent<IHealth>(out IHealth health);
+
+            if (health == null)
+                continue;
+
+            health.Damage(0);
+            targetsHit++;
+        }
+
+        //Trigger explosion
+        Debug.Log(string.Format("Fuse exploded at {0} and hit {1} targets", parentTransform.position, targetsHit));
+
+        Destroy(parentTransform.gameObject);
     }
 
     #endregion
