@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class RD_movementScript : MonoBehaviour, RD_IExplodeable
+public class RD_movementScript : MonoBehaviour
 {
     private float pitchingSpeed = 45f;
     private float rollingSpeed = 45f;
@@ -89,10 +89,5 @@ public class RD_movementScript : MonoBehaviour, RD_IExplodeable
 
             dropBombSlotIndex = (dropBombSlotIndex + 1) % bombSlots.Length;
         }
-    }
-
-    public void TakeDamage(int damage)
-    {
-        
     }
 }
