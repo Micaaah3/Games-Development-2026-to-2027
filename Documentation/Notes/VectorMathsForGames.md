@@ -91,6 +91,21 @@ $|(4,2,4)| = \sqrt{4^{2} + 2^2 + 4^2} = 6$
 
 $NPC1_{forward} = \frac16 (4,2,4)$
 
+NPC1 is facing NPC2 it NPC1 to NPC2 is in same direction as NPC1.forward.
+
+So is (-2,1,-2) in the same direction as (4,2,4)
+
+Only if the scalar dot product is greater than 0
+
+$(-1,1,-2) \cdot (4,2,4) = -2 \times 4 + 1 \times 2 + -2 \times 4 = -14$  No
+
+Is NPC2 facing NPC1?  We need to compare "NPC2 to NPC1" to NPC2 forward
+
+Clearly NPC2 to NPC1 = -(NPC1 to NPC2) = -(-2,1,-2) = (2,-1,2)
+NPC2.forward is parallel to (7,4,4)
+
+Getting scalar dot product $(2,-1,2) \cdot (7,4,4) = 14 + (-4) + 8 = 18 >0 $   Yes
+
 
 
 
