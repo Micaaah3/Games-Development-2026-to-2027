@@ -67,6 +67,25 @@ Defn:
 
 if $v_{1} = (x_{1}, y_{1}, z_{1})$ and $v_{2} = (x_{2}, y_{2}, z_{2})$ then
 
-$v \dot u =  x_{1}\times  x_{2} + y_{1}\times y_{2} +   z_{1} times z_{2})$
+$v \cdot u =  x_{1}\times  x_{2} + y_{1}\times y_{2} +   z_{1} \times z_{2}$
+
+This may also be calculated as
+
+$v \cdot u = |v||u|\cos(\theta)$ where $\theta$ is the angle between the 2 vectors
+
+<img width="242" height="258" alt="image" src="https://github.com/user-attachments/assets/9d043a04-b145-48ee-9db3-64d852449bbf" />
+
+This is really usefull in games to determine whether a character is "facing" their target.  (For this example we are assuming that facing means within 90 degrees.
+
+Example:
+
+<img width="721" height="430" alt="image" src="https://github.com/user-attachments/assets/641d7b56-91e3-43ff-9464-e81e9ad3cdeb" />
+
+$v_{1 to 2}$ = NPC1 to CPC2 = (1,3,4) - (3,2,6) = (-2, 1, -2)
+
+$|v_{1 to 2}| = |(-2, 1, -2)| = \sqrt{ (-2)^{2} + 1^{2} + (-2)^{2} ) = \sqrt{4 + 1 + 4} = 3$
+
+
+
 
 
