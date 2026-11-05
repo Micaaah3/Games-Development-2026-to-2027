@@ -42,7 +42,9 @@ public class NQ_BombScript : MonoBehaviour
                 transform.Rotate(transform.forward, rotationRate * Time.deltaTime);
 
                 break;
+
         }
+        
 
     }
 

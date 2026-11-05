@@ -1,19 +1,27 @@
+using System;
 using UnityEngine;
 
-public class NQ_PlaneControl : MonoBehaviour, NQ_IDamage
+public class NQ_PlaneControl : MonoBehaviour, NQ_IDamage, I_Rebombable, I_Refuelable
 {
     float pitchingSpeed = 45f;  // Speed in degrees per second for pitching
     private float rollingSpeed = 45f;
     internal Vector3 velocity, acceleration;
     private float thrustValue = 20f;
-    private float gravity = 9.81f;
+    private float gravity = 0; //9.81f;
     float drag = 1;
     public GameObject theBombCloneTemplate;
     NQ_BombSlotScript[] bombSlot;
-    int fuel = 100;
+    float currentFuel = 20;
+    float maxCapacity = 100;
+    float ticks = 0;
+    int start = 0;
+    int maxTick = 0;
     int ammo = 4;
+    float maxAmmo = 4;
+    float fuelconsmptionrate = 1;
 
     int NextBombSlotIndex = 0;
+    private float reloadTime = 5f;
 
     internal void TurnRed()
     {
@@ -54,7 +62,7 @@ public class NQ_PlaneControl : MonoBehaviour, NQ_IDamage
         else simulatedGravity = 0;
 
 
-        acceleration += new Vector3(0, -simulatedGravity, 0);
+        //acceleration += new Vector3(0, -simulatedGravity, 0);
 
         if (Input.GetKey(KeyCode.UpArrow))
         {
@@ -80,29 +88,83 @@ public class NQ_PlaneControl : MonoBehaviour, NQ_IDamage
 
         if (Input.GetKey(KeyCode.Space))
         {
-            acceleration += transform.forward * thrustValue;
-            fuel -= 1; //Figure out how to make it go down for every second.
+
+            if (currentFuel > 0){
+                acceleration += transform.forward * thrustValue;
+                currentFuel -= fuelconsmptionrate * Time.deltaTime;
+            }
+            if (currentFuel < 0){
+                    thrustValue = 0;
+                }
+
         }
 
         acceleration += -drag * velocity;
 
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            ammo -= 1;
-            bombSlot[NextBombSlotIndex].DroptheBomb();
+            if (ammo >= 1)
+            {
+                ammo--;
+                bombSlot[NextBombSlotIndex].DroptheBomb();
 
-            NextBombSlotIndex = (NextBombSlotIndex + 1) % bombSlot.Length;
+                NextBombSlotIndex = (NextBombSlotIndex + 1) % bombSlot.Length;
 
-            if (NextBombSlotIndex == bombSlot.Length) NextBombSlotIndex = 0;
-
+                if (NextBombSlotIndex == bombSlot.Length) NextBombSlotIndex = 0;
+            }
         }
 
         velocity += acceleration * Time.deltaTime;
         transform.position += velocity * Time.deltaTime;
+        //print("fuel" + currentFuel);
+        //print("Fuel " + currentFuel.ToString());
+        //print("tick " + ticks.ToString());
+        print("ammo: " + ammo.ToString());
     }
 
     public void TakeDamage(int damage)
     {
         throw new System.NotImplementedException();
+    }
+
+    public void takebombtick(float tickamount)
+    {
+        ticks += tickamount;
+    
+        if (ticks >= reloadTime)
+        {
+            print("Reloading");
+            allocateBomb();
+            //NextBombSlotIndex--;
+            //ticks = start;
+            //print("Bomb added");
+        }
+        if (ammo >= 4)
+        {
+            ticks = maxTick;
+        }
+    }
+
+    private void allocateBomb()
+    {
+        foreach (NQ_BombSlotScript bs in bombSlot)
+        {
+            if (bs.doyouneedbomb() )
+            {
+                ticks = start;
+                ammo++;
+                bs.instanceatebomb();
+            }
+        }
+    }
+
+    public void takefuel(float fuelamount)
+    {
+        currentFuel += fuelamount;
+        print("Refueling");
+        if (currentFuel >= 100)
+        {
+            currentFuel = maxCapacity;
+        }
     }
 }

@@ -78,4 +78,9 @@ public class KK_MoveScript : MonoBehaviour
 
 
     }
+
+    public Vector3 GetVelocity()
+{
+    return velocity;
+}
 }
