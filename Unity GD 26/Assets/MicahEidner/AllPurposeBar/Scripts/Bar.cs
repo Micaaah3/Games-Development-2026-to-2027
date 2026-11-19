@@ -21,7 +21,12 @@ public class Bar : MonoBehaviour
     [SerializeField]
     private Boolean _isTesting = false;
 
+    private GameObject _owner;
+    
+    // _position can act as an offset to _owner
+    private Vector3 _position;
 
+    private bool _ignoreOwner = false;
 
 
     #region Constructors
@@ -29,11 +34,12 @@ public class Bar : MonoBehaviour
     {
     }
 
-    public Bar(float min, float curr, float max)
+    public Bar(float min, float curr, float max, Vector3 position)
     {
         SetBarMin(min);
         SetCurrent(curr);
         SetBarMax(max);
+
         SetMainColor(Color.green);
         SetBackgroundColor(Color.red);
         SetTitle("");
@@ -150,8 +156,46 @@ public class Bar : MonoBehaviour
 
     public void SetIsTesting(bool value)
     {
-        Debug.Log("Testing Mode for Bar:" + value);
+        if (_isTesting)
+            Debug.Log("Bar new title is now: " + value);
         _isTesting = value;
+    }
+
+
+    public Vector3 GetPosition()
+    {
+        return _position;
+    }
+
+    public void SetPosition(Vector3 value)
+    {
+        if (_isTesting)
+            Debug.Log("Bar position/offset is now: " + value);
+        _position = value;
+    }
+
+    public GameObject GetOwner()
+    {
+        return _owner;
+    }
+
+    public void SetOwner(GameObject value)
+    {
+        if (_isTesting)
+            Debug.Log("Bar new owner is now: " + value);
+        _owner = value;
+    }
+
+    public bool GetIgnoreOwner()
+    {
+        return _ignoreOwner;
+    }
+
+    public void SetIgnoreOwner(bool value)
+    {
+        if (_isTesting)
+            Debug.Log("Bar ignore owner is now " + value);
+        _ignoreOwner = value;
     }
     #endregion
 }
