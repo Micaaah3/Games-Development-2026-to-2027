@@ -93,7 +93,7 @@ public class ME_AntiAir : MonoBehaviour, IHealth, ITargetable
         {
             int inconsistency = UnityEngine.Random.Range(-100, 100);
 
-            fuseTimer = (distance / _initialShellSpeed) + (inconsistency / 100);
+            fuseTimer = (distance / _initialShellSpeed) + (inconsistency / 50);
         }
 
         GameObject shell = Instantiate(Shell, _firingPosition.position, Quaternion.identity);
