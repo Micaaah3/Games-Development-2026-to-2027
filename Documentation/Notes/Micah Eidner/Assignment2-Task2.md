@@ -5,16 +5,18 @@
 ### Goals
 - [x] Create this very document
 - [ ] Create the testing document
-- [ ] Adjustable values; (Min, current, max)
-- [ ] Ability to set percentage or arbitrary float values (Manually set to 70% or set bar value to 70 for example)
+- [ ] Adjustable values; (Min, current, max) through setMin/setCur/setMax
+- [ ] Ability to set percentage or arbitrary float values (Manually set to 70% or set bar value to 70 for example) through setPercent/setCur
 - [ ] Display on UI
 - [ ] Display in world (I.e health bar above enemy/boss)
 - [ ] Multi-stage bar (Can help indicate different stages for bosses)
-- [ ] Changeable bar colors (Can indicate stamina, energy, health, etc)
-- [ ] Text option (Either showing values, or what the bar means)
+- [ ] Changeable bar colors (Can indicate stamina, energy, health, etc) through setColor
+- [ ] Text option (Either showing values, or what the bar means) through setText
 
 
 ## Testing Plan
 - [x] Read this document
 - [ ] Read the testing document
 - [ ] Test it.
+
+To test it, you must set .isTesting to True.
