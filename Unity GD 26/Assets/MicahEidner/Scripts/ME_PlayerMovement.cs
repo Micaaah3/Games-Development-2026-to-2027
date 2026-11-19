@@ -1,8 +1,12 @@
 using System;
 using UnityEngine;
+using static UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle;
 
 public class ME_PlayerMovement : MonoBehaviour
 {
+    [SerializeField]
+    private Gradient throttleSpeedSlope;
+
     [SerializeField]
     private float throttle;
     [SerializeField]
@@ -21,6 +25,8 @@ public class ME_PlayerMovement : MonoBehaviour
     private Vector3 _velocity;
     [SerializeField]
     private Vector3 _acceleration;
+    [SerializeField]
+    private Vector3 _direction;
 
     private void Update()
     {
@@ -28,7 +34,7 @@ public class ME_PlayerMovement : MonoBehaviour
         HandleThrottle();
 
         //Gravity
-        _acceleration += new Vector3(0,-9.8f, 0);
+        _acceleration += new Vector3(0,-9.81f, 0);
 
 
         Vector3 keyMovement = GetRotationMovement();
@@ -39,7 +45,7 @@ public class ME_PlayerMovement : MonoBehaviour
 
 
         // Very basic drag simulation.
-        _velocity = _velocity * 0.99f;
+        _velocity = _velocity * 0.97f;
 
         transform.position += _velocity * Time.deltaTime;
 
@@ -47,42 +53,51 @@ public class ME_PlayerMovement : MonoBehaviour
     
     private Vector3 GetRotationMovement()
     {
-        Vector3 direction = new();
+        _direction = BringAxisToZero(_direction);
         if (Input.GetKey(KeyCode.W))
         {
-            direction.x = 1 * xSensitivity;
+            _direction.x = Mathf.Lerp(_direction.x, 1 * xSensitivity, 0.01f);
         }
         if (Input.GetKey(KeyCode.S))
         {
-            direction.x = -1 * xSensitivity;
+            _direction.x = Mathf.Lerp(_direction.x, - 1 * xSensitivity, 0.01f);
         }
         if (Input.GetKey(KeyCode.A))
         {
-            direction.z = 1 * zSensitivity;
+            _direction.z = Mathf.Lerp(_direction.z, 1 * zSensitivity, 0.01f);
         }
         if (Input.GetKey(KeyCode.D))
         {
-            direction.z = -1 * zSensitivity;
+            _direction.z = Mathf.Lerp(_direction.z, -1 * zSensitivity, 0.01f);
         }
         if (Input.GetKey(KeyCode.Q))
         {
-            direction.y = 1 * ySensitivity;
+            _direction.y = Mathf.Lerp(_direction.y, 1 * ySensitivity, 0.01f);
         }
         if (Input.GetKey(KeyCode.E))
         {
-            direction.y = -1 * ySensitivity;
+            _direction.y = Mathf.Lerp(_direction.y, -1 * ySensitivity, 0.01f);
         }
 
 
 
-        return direction;
+        return _direction;
+    }
+
+    private Vector3 BringAxisToZero(Vector3 axes)
+    {
+        float xAxis = Mathf.Lerp(axes.x, 0, 0.002f);
+        float yAxis = Mathf.Lerp(axes.y, 0, 0.005f);
+        float zAxis = Mathf.Lerp(axes.z, 0, 0.005f);
+
+        return new Vector3(xAxis,yAxis,zAxis);
     }
 
 
     private void HandleThrottle()
     {
         //set to zero
-        _acceleration = Vector3.zero;
+        _acceleration = new Vector3();
 
         if (Input.GetKey(KeyCode.R))
         {
@@ -95,6 +110,8 @@ public class ME_PlayerMovement : MonoBehaviour
             throttle = Mathf.Lerp(throttle, newThrottle, engineLag);
         }
 
-        _acceleration = transform.forward * _thrust * throttle;
+        Color speed = throttleSpeedSlope.Evaluate(throttle / 100);
+
+        _acceleration = (transform.forward * _thrust * (speed.a*20)) + (_acceleration * (0.8f - Time.deltaTime * 10));
     }
 }
