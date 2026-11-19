@@ -19,4 +19,5 @@
 - [ ] Read the testing document
 - [ ] Test it.
 
+Code, assets, prefabs, materials, etc,etc is in Assets/MicahEidner/AllPurposeBar/
 To test it, you must set .isTesting to True.
