@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Bar : MonoBehaviour
 {
@@ -21,20 +22,31 @@ public class Bar : MonoBehaviour
     [SerializeField]
     private Boolean _isTesting = false;
 
-    private GameObject _owner;
-    
-    // _position can act as an offset to _owner
+    [SerializeField]
     private Vector3 _position;
 
-    private bool _ignoreOwner = false;
+    [SerializeField]
+    private Slider _slider;
+    
+    [SerializeField]
+    private Image _background;
+    [SerializeField]
+    private Image _fill;
 
-
-    #region Constructors
-    public Bar()
+    private void Update()
     {
+        _background.color = _backgroundColor;
+        _fill.color = _mainColor;
+        
+        _slider.value = _current;
+        _slider.maxValue = _barMax;
+        _slider.minValue = _barMin;
+        
     }
 
-    public Bar(float min, float curr, float max, Vector3 position)
+    #region Constructors
+
+    public Bar(float min, float curr, float max, Vector3? position = null)
     {
         SetBarMin(min);
         SetCurrent(curr);
@@ -43,9 +55,12 @@ public class Bar : MonoBehaviour
         SetMainColor(Color.green);
         SetBackgroundColor(Color.red);
         SetTitle("");
+
+        if (position != null)
+            SetPosition((Vector3)position);
     }
 
-    public Bar(float min, float curr, float max,Color primary, Color secondary)
+    public Bar(float min, float curr, float max,Color primary, Color secondary, Vector3? position = null)
     {
         SetBarMin(min);
         SetCurrent(curr);
@@ -53,9 +68,13 @@ public class Bar : MonoBehaviour
         SetMainColor(primary);
         SetBackgroundColor(secondary);
         SetTitle("");
+
+        
+        if (position != null)
+            SetPosition((Vector3)position);
     }
 
-    public Bar(float min, float curr, float max, Color primary, Color secondary,string title)
+    public Bar(float min, float curr, float max, Color primary, Color secondary,string title, Vector3? position = null)
     {
         SetBarMin(min);
         SetCurrent(curr);
@@ -63,6 +82,9 @@ public class Bar : MonoBehaviour
         SetMainColor(primary);
         SetBackgroundColor(secondary);
         SetTitle(title);
+        
+        if (position != null)
+            SetPosition((Vector3)position);
     }
 
     #endregion
@@ -174,28 +196,5 @@ public class Bar : MonoBehaviour
         _position = value;
     }
 
-    public GameObject GetOwner()
-    {
-        return _owner;
-    }
-
-    public void SetOwner(GameObject value)
-    {
-        if (_isTesting)
-            Debug.Log("Bar new owner is now: " + value);
-        _owner = value;
-    }
-
-    public bool GetIgnoreOwner()
-    {
-        return _ignoreOwner;
-    }
-
-    public void SetIgnoreOwner(bool value)
-    {
-        if (_isTesting)
-            Debug.Log("Bar ignore owner is now " + value);
-        _ignoreOwner = value;
-    }
     #endregion
 }
