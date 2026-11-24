@@ -18,9 +18,9 @@ public class Bar : MonoBehaviour
 
     [SerializeField]
     private string _title;
-
+    
     [SerializeField]
-    private Boolean _isTesting = false;
+    private Boolean _isScreenOverlay = false;
 
     [SerializeField]
     private Vector3 _position;
@@ -32,62 +32,38 @@ public class Bar : MonoBehaviour
     private Image _background;
     [SerializeField]
     private Image _fill;
+    [SerializeField]
+    private Boolean _isTesting = false;
+
+    private void Start()
+    {
+        SetBackgroundColor(_backgroundColor);
+        SetMainColor(_mainColor);
+        
+        SetBarMax(_barMax);
+        SetBarMin(_barMin);
+        
+        SetCurrent(_current);
+        
+        SetPosition(_position);
+    }
 
     private void Update()
     {
-        _background.color = _backgroundColor;
-        _fill.color = _mainColor;
+        if (!_isTesting)
+            return;
         
-        _slider.value = _current;
-        _slider.maxValue = _barMax;
-        _slider.minValue = _barMin;
+        SetBackgroundColor(_backgroundColor);
+        SetMainColor(_mainColor);
+        
+        SetCurrent(_current);
+        SetBarMax(_barMax);
+        SetBarMin(_barMin);
+        SetPosition(_position);
+        SetTitle(_title);
         
     }
-
-    #region Constructors
-
-    public Bar(float min, float curr, float max, Vector3? position = null)
-    {
-        SetBarMin(min);
-        SetCurrent(curr);
-        SetBarMax(max);
-
-        SetMainColor(Color.green);
-        SetBackgroundColor(Color.red);
-        SetTitle("");
-
-        if (position != null)
-            SetPosition((Vector3)position);
-    }
-
-    public Bar(float min, float curr, float max,Color primary, Color secondary, Vector3? position = null)
-    {
-        SetBarMin(min);
-        SetCurrent(curr);
-        SetBarMax(max);
-        SetMainColor(primary);
-        SetBackgroundColor(secondary);
-        SetTitle("");
-
-        
-        if (position != null)
-            SetPosition((Vector3)position);
-    }
-
-    public Bar(float min, float curr, float max, Color primary, Color secondary,string title, Vector3? position = null)
-    {
-        SetBarMin(min);
-        SetCurrent(curr);
-        SetBarMax(max);
-        SetMainColor(primary);
-        SetBackgroundColor(secondary);
-        SetTitle(title);
-        
-        if (position != null)
-            SetPosition((Vector3)position);
-    }
-
-    #endregion
+    
     #region property get/setters
 
 
@@ -101,6 +77,7 @@ public class Bar : MonoBehaviour
         if (_isTesting)
             Debug.Log("Bar new min value is now: " + value);
         _barMin = value;
+        _slider.minValue = _barMin;
     }
 
     public float GetBarMax()
@@ -113,6 +90,7 @@ public class Bar : MonoBehaviour
         if (_isTesting)
             Debug.Log("Bar new max value is now: " + value);
         _barMax = value;
+        _slider.maxValue = _barMax;
     }
 
     public float GetCurrent()
@@ -125,6 +103,7 @@ public class Bar : MonoBehaviour
         if (_isTesting)
             Debug.Log("Bar new current value is now: " + value);
         _current = value;
+        _slider.value = _current;
     }
 
     public void SetCurrentPercent(float percentage)
@@ -134,6 +113,7 @@ public class Bar : MonoBehaviour
         if (_isTesting)
             Debug.Log("Bar new current value is now: " + value + " from using " + (percentage*100) + "%");
         _current = value;
+        _slider.value = _current;
     }
 
     public Color GetMainColor()
@@ -146,6 +126,7 @@ public class Bar : MonoBehaviour
         if (_isTesting)
             Debug.Log("Bar new main color is now: " + value);
         _mainColor = value;
+        _fill.color = _mainColor;
     }
 
     public Color GetBackgroundColor()
@@ -158,6 +139,7 @@ public class Bar : MonoBehaviour
         if (_isTesting)
             Debug.Log("Bar new background color is now: " + value);
         _backgroundColor = value;
+        _background.color = _backgroundColor;
     }
 
     public string GetTitle()
@@ -180,10 +162,19 @@ public class Bar : MonoBehaviour
     {
         if (_isTesting)
             Debug.Log("Bar new title is now: " + value);
-        _isTesting = value;
+        _isScreenOverlay = value;
+    }
+    public bool GetIsScreenOverlay()
+    {
+        return _isTesting;
     }
 
-
+    public void SetIsScreenOverlay(bool value)
+    {
+        if (_isTesting)
+            Debug.Log("Bar new title is now: " + value);
+        _isScreenOverlay = value;
+    }
     public Vector3 GetPosition()
     {
         return _position;
@@ -193,7 +184,14 @@ public class Bar : MonoBehaviour
     {
         if (_isTesting)
             Debug.Log("Bar position/offset is now: " + value);
+
+        if (_isScreenOverlay)
+        {
+            Debug.Log("Bar will not update position as it is a screen overlay. Change the position in editor.");
+            return;
+        }
         _position = value;
+        transform.position = _position;
     }
 
     #endregion
