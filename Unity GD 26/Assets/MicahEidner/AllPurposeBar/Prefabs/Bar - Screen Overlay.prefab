@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 1605522551004314326}
   - component: {fileID: 8823500527918001785}
   m_Layer: 5
-  m_Name: Bar
+  m_Name: Bar - Screen Overlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94,8 +94,9 @@ MonoBehaviour:
   _backgroundColor: {r: 0.18516374, g: 0.4970428, b: 0.5377358, a: 1}
   _title: 
   _isScreenOverlay: 1
-  _position: {x: 0, y: 0, z: 0}
+  _position: {x: -790, y: -485, z: 0}
   _slider: {fileID: 8823500527918001785}
+  _text: {fileID: 3654238900954765524}
   _background: {fileID: 623557544262789983}
   _fill: {fileID: 4339452959403373877}
   _isTesting: 0

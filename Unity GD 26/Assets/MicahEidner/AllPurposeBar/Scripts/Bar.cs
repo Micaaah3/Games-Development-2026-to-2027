@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,6 +28,10 @@ public class Bar : MonoBehaviour
 
     [SerializeField]
     private Slider _slider;
+
+
+    [SerializeField]
+    private TextMeshProUGUI _text;
     
     [SerializeField]
     private Image _background;
@@ -44,6 +49,11 @@ public class Bar : MonoBehaviour
         SetBarMin(_barMin);
         
         SetCurrent(_current);
+
+        if (_isScreenOverlay)
+        {
+            _position = transform.localPosition;
+        }
         
         SetPosition(_position);
     }
@@ -152,6 +162,7 @@ public class Bar : MonoBehaviour
         if (_isTesting)
             Debug.Log("Bar new title is now: " +  value);
         _title = value;
+        _text.text = _title;
     }
     public bool GetIsTesting()
     {
@@ -185,14 +196,20 @@ public class Bar : MonoBehaviour
         if (_isTesting)
             Debug.Log("Bar position/offset is now: " + value);
 
+        _position = value;
+        
         if (_isScreenOverlay)
         {
-            Debug.Log("Bar will not update position as it is a screen overlay. Change the position in editor.");
+            transform.localPosition = _position;
             return;
         }
-        _position = value;
         transform.position = _position;
     }
 
+    public TextMeshProUGUI Text
+    {
+        get => _text;
+        set => _text = value;
+    }
     #endregion
 }
