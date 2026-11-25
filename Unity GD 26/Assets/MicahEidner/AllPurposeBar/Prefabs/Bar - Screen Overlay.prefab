@@ -94,7 +94,7 @@ MonoBehaviour:
   _backgroundColor: {r: 0.18516374, g: 0.4970428, b: 0.5377358, a: 1}
   _title: 
   _isScreenOverlay: 1
-  _position: {x: -790, y: -485, z: 0}
+  _position: {x: 0, y: -485, z: 0}
   _slider: {fileID: 8823500527918001785}
   _text: {fileID: 3654238900954765524}
   _background: {fileID: 623557544262789983}
@@ -318,7 +318,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 61.35
+  m_fontSize: 54.1
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -357,7 +357,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0.026191462, y: 0, z: -0.016052213, w: 0}
+  m_margin: {x: 20.197784, y: 4.764248, z: 16.8759, w: 3.376686}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

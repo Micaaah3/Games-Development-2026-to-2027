@@ -76,7 +76,6 @@ public class Bar : MonoBehaviour
     
     #region property get/setters
 
-
     public float GetBarMin()
     {
         return _barMin;
