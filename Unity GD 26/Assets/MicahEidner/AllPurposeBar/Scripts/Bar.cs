@@ -1,5 +1,7 @@
 using System;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Bar : MonoBehaviour
 {
@@ -17,55 +19,61 @@ public class Bar : MonoBehaviour
 
     [SerializeField]
     private string _title;
+    
+    [SerializeField]
+    private Boolean _isScreenOverlay = false;
 
+    [SerializeField]
+    private Vector3 _position;
+
+    [SerializeField]
+    private Slider _slider;
+
+
+    [SerializeField]
+    private TextMeshProUGUI _text;
+    
+    [SerializeField]
+    private Image _background;
+    [SerializeField]
+    private Image _fill;
     [SerializeField]
     private Boolean _isTesting = false;
 
-    private GameObject _owner;
+    private void Start()
+    {
+        SetBackgroundColor(_backgroundColor);
+        SetMainColor(_mainColor);
+        
+        SetBarMax(_barMax);
+        SetBarMin(_barMin);
+        
+        SetCurrent(_current);
+
+        if (_isScreenOverlay)
+        {
+            _position = transform.localPosition;
+        }
+        
+        SetPosition(_position);
+    }
+
+    private void Update()
+    {
+        if (!_isTesting)
+            return;
+        
+        SetBackgroundColor(_backgroundColor);
+        SetMainColor(_mainColor);
+        
+        SetCurrent(_current);
+        SetBarMax(_barMax);
+        SetBarMin(_barMin);
+        SetPosition(_position);
+        SetTitle(_title);
+        
+    }
     
-    // _position can act as an offset to _owner
-    private Vector3 _position;
-
-    private bool _ignoreOwner = false;
-
-
-    #region Constructors
-    public Bar()
-    {
-    }
-
-    public Bar(float min, float curr, float max, Vector3 position)
-    {
-        SetBarMin(min);
-        SetCurrent(curr);
-        SetBarMax(max);
-
-        SetMainColor(Color.green);
-        SetBackgroundColor(Color.red);
-        SetTitle("");
-    }
-
-    public Bar(float min, float curr, float max,Color primary, Color secondary)
-    {
-        SetBarMin(min);
-        SetCurrent(curr);
-        SetBarMax(max);
-        SetMainColor(primary);
-        SetBackgroundColor(secondary);
-        SetTitle("");
-    }
-
-    public Bar(float min, float curr, float max, Color primary, Color secondary,string title)
-    {
-        SetBarMin(min);
-        SetCurrent(curr);
-        SetBarMax(max);
-        SetMainColor(primary);
-        SetBackgroundColor(secondary);
-        SetTitle(title);
-    }
-
-    #endregion
     #region property get/setters
 
 
@@ -79,6 +87,7 @@ public class Bar : MonoBehaviour
         if (_isTesting)
             Debug.Log("Bar new min value is now: " + value);
         _barMin = value;
+        _slider.minValue = _barMin;
     }
 
     public float GetBarMax()
@@ -91,6 +100,7 @@ public class Bar : MonoBehaviour
         if (_isTesting)
             Debug.Log("Bar new max value is now: " + value);
         _barMax = value;
+        _slider.maxValue = _barMax;
     }
 
     public float GetCurrent()
@@ -103,6 +113,7 @@ public class Bar : MonoBehaviour
         if (_isTesting)
             Debug.Log("Bar new current value is now: " + value);
         _current = value;
+        _slider.value = _current;
     }
 
     public void SetCurrentPercent(float percentage)
@@ -112,6 +123,7 @@ public class Bar : MonoBehaviour
         if (_isTesting)
             Debug.Log("Bar new current value is now: " + value + " from using " + (percentage*100) + "%");
         _current = value;
+        _slider.value = _current;
     }
 
     public Color GetMainColor()
@@ -124,6 +136,7 @@ public class Bar : MonoBehaviour
         if (_isTesting)
             Debug.Log("Bar new main color is now: " + value);
         _mainColor = value;
+        _fill.color = _mainColor;
     }
 
     public Color GetBackgroundColor()
@@ -136,6 +149,7 @@ public class Bar : MonoBehaviour
         if (_isTesting)
             Debug.Log("Bar new background color is now: " + value);
         _backgroundColor = value;
+        _background.color = _backgroundColor;
     }
 
     public string GetTitle()
@@ -148,6 +162,7 @@ public class Bar : MonoBehaviour
         if (_isTesting)
             Debug.Log("Bar new title is now: " +  value);
         _title = value;
+        _text.text = _title;
     }
     public bool GetIsTesting()
     {
@@ -158,10 +173,19 @@ public class Bar : MonoBehaviour
     {
         if (_isTesting)
             Debug.Log("Bar new title is now: " + value);
-        _isTesting = value;
+        _isScreenOverlay = value;
+    }
+    public bool GetIsScreenOverlay()
+    {
+        return _isTesting;
     }
 
-
+    public void SetIsScreenOverlay(bool value)
+    {
+        if (_isTesting)
+            Debug.Log("Bar new title is now: " + value);
+        _isScreenOverlay = value;
+    }
     public Vector3 GetPosition()
     {
         return _position;
@@ -171,31 +195,21 @@ public class Bar : MonoBehaviour
     {
         if (_isTesting)
             Debug.Log("Bar position/offset is now: " + value);
+
         _position = value;
+        
+        if (_isScreenOverlay)
+        {
+            transform.localPosition = _position;
+            return;
+        }
+        transform.position = _position;
     }
 
-    public GameObject GetOwner()
+    public TextMeshProUGUI Text
     {
-        return _owner;
-    }
-
-    public void SetOwner(GameObject value)
-    {
-        if (_isTesting)
-            Debug.Log("Bar new owner is now: " + value);
-        _owner = value;
-    }
-
-    public bool GetIgnoreOwner()
-    {
-        return _ignoreOwner;
-    }
-
-    public void SetIgnoreOwner(bool value)
-    {
-        if (_isTesting)
-            Debug.Log("Bar ignore owner is now " + value);
-        _ignoreOwner = value;
+        get => _text;
+        set => _text = value;
     }
     #endregion
 }
